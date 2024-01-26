@@ -41,20 +41,49 @@ require_once($CFG->dirroot . '/mod/quiz/backup/moodle2/backup_mod_quiz_access_su
 class backup_quizaccess_sebprogram_subplugin extends backup_mod_quiz_access_subplugin {
 
     protected function define_quiz_subplugin_structure() {
+        //sebprogram dependency child sebprogram, 2 ids con sql set source sql.
+        parent::define_quiz_subplugin_structure();
+        $quizid = backup::VAR_ACTIVITYID;
 
         // Create XML elements.
         $subplugin = $this->get_subplugin_element();
         $subpluginwrapper = new backup_nested_element($this->get_recommended_name());
-        $subplugintablesettings = new backup_nested_element('quiz_seb_program_quiz',
-                null, ['honestycheckrequired']);
+
+        // Programs.
+        $subpluginprograms = new \quizaccess_sebprogram\program();
+        $blankprogramsarray = (array) $subpluginprograms->to_record();
+        $programskeys = array_keys($blankprogramsarray);
+
+        $subpluginprogramssettings = new backup_nested_element('quizaccess_seb_program', null, $programskeys);
+
+        // Quiz programs.
+        $subpluginquizprograms = new \quizaccess_sebprogram\program_quiz();
+        $blankquizprogramsarray = (array) $subpluginquizprograms->to_record();
+        $quizprogramskeys = array_keys($blankquizprogramsarray);
+
+        $subpluginquizprogramssettings = new backup_nested_element('quizaccess_seb_program_quiz', null, $quizprogramskeys);
+
+        // Quiz dependendecies.
+        $subplugindependencies = new \quizaccess_sebprogram\program_dependency();
+        $blankdependenciesarray = (array) $subplugindependencies->to_record();
+        $dependencieskeys = array_keys($blankdependenciesarray);
+
+        $subplugindependenciessettings = new backup_nested_element('quizaccess_sebprogram_depend', null, $dependencieskeys);
 
         // Connect XML elements into the tree.
         $subplugin->add_child($subpluginwrapper);
-        $subpluginwrapper->add_child($subplugintablesettings);
+        $subpluginwrapper->add_child($subpluginprogramssettings);
+        $subpluginwrapper->add_child($subpluginquizprogramssettings);
+        $subpluginwrapper->add_child($subplugindependenciessettings);
 
         // Set source to populate the data.
-        $subplugintablesettings->set_source_table('quiz_seb_program_quiz',
-                ['idquiz' => backup::VAR_ACTIVITYID]);
+        $subpluginprogramssettings->set_source_table(\quizaccess_sebprogram\program::TABLE,
+            ['courseid' => backup::VAR_COURSEID]);
+        $subpluginquizprogramssettings->set_source_table(\quizaccess_sebprogram\program_quiz::TABLE,
+        ['idquiz' => $quizid]);
+        $subplugindependenciessettings->set_source_table(\quizaccess_sebprogram\program_dependency::TABLE, []);
+        $subplugindependenciessettings->annotate_ids('idprogram', 'idprogram');
+        $subplugindependenciessettings->annotate_ids('idprogram_dependency', 'idprogram_dependency');
 
         return $subplugin;
     }

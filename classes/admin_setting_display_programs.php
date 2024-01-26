@@ -87,10 +87,10 @@ class quizaccess_sebprogram_admin_setting_display_programs extends admin_setting
         ];
         $table->align = ['left', 'center'];
 
-        $records = $DB->get_records('quiz_seb_program', ['courseid' => -1]);
+        $records = $DB->get_records('quizaccess_seb_program', ['courseid' => -1]);
 
         foreach ($records as $record) {
-            $count = $DB->count_records("quiz_seb_program_quiz", ['idprogram' => $record->id]);
+            $count = $DB->count_records("quizaccess_seb_program_quiz", ['idprogram' => $record->id]);
             $actions = [];
 
             $actions[] = helper::format_icon_link(

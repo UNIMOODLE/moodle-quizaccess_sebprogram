@@ -136,7 +136,7 @@ class template_course extends \core\form\persistent {
 
     private function set_all_program_list($idprogram) {
         global $DB;
-        $this->recordsprogramselect = $DB->get_records('quiz_seb_program_dependecy', ['idprogram' => $idprogram]);
+        $this->recordsprogramselect = $DB->get_records('quizaccess_sebprogram_depend', ['idprogram' => $idprogram]);
         foreach ($this->recordsprogramselect as $record) {
             array_push($this->programselectlist, $record->idprogram_dependency);
         }

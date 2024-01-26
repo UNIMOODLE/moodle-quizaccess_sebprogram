@@ -114,7 +114,7 @@ class quizaccess_sebprogram extends quiz_access_rule_base {
         $idquiz = $quizform->get_instance();
         $idcurse = $quizform->get_coursemodule() ? $quizform->get_coursemodule()->course : optional_param('course', -1, PARAM_INT);
 
-        $mform->addElement('header', 'honestycheckheader_my', get_string('pluginname', 'quizaccess_sebprogram'));
+        $mform->addElement('header', 'sebprogramheader_my', get_string('pluginname', 'quizaccess_sebprogram'));
 
         $currenturl = $PAGE->url;
         // Not needed at the moment 'session_start();'.
@@ -122,7 +122,7 @@ class quizaccess_sebprogram extends quiz_access_rule_base {
         if (has_capability('quizaccess/sebprogram:manageprograms',  context_course::instance($idcurse))) {
             $mform->addElement('button', 'seb_program_button_admin_programs_course',
                 '<a href="'. new moodle_url("/mod/quiz/accessrule/sebprogram/view_course.php",
-                    ['course' => $idcurse]).'">Manage programs</a>');
+                    ['course' => $idcurse]).'">'. get_string('managetemplates', 'quizaccess_sebprogram') . '</a>');
         }
 
         $recordprograms = program::get_records_course($idcurse, 'id', true);
@@ -135,7 +135,7 @@ class quizaccess_sebprogram extends quiz_access_rule_base {
 
         // Si es un editar obtener los programas a seleccionar.
         if ($idquiz > 0) {
-            $recordsprogramselect = $DB->get_records('quiz_seb_program_quiz', ['idquiz' => $idquiz]);
+            $recordsprogramselect = $DB->get_records('quizaccess_seb_program_quiz', ['idquiz' => $idquiz]);
             $programselectlist = [];
             foreach ($recordsprogramselect as $record) {
                 array_push($programselectlist, $record->idprogram);
@@ -144,7 +144,7 @@ class quizaccess_sebprogram extends quiz_access_rule_base {
         }
 
         if ($mform->elementExists("security")) {
-                $mform->removeElement("honestycheckheader_my", false);
+                $mform->removeElement("sebprogramheader_my", false);
             if (has_capability('quizaccess/sebprogram:manageprograms', context_course::instance($idcurse))) {
                 $mform->insertElementBefore($mform->removeElement("seb_program_button_admin_programs_course", false), 'security');
                 $mform->hideIf("seb_program_button_admin_programs_course", "seb_requiresafeexambrowser", "noteq",
@@ -165,7 +165,7 @@ class quizaccess_sebprogram extends quiz_access_rule_base {
         $idprogramselects = $quiz->seb_program_autocomplete_program_quiz;
         $programselectlist = [];
 
-        $recordsprogramselect = $DB->get_records('quiz_seb_program_quiz', ['idquiz' => $quiz->id]);
+        $recordsprogramselect = $DB->get_records('quizaccess_seb_program_quiz', ['idquiz' => $quiz->id]);
         foreach ($recordsprogramselect as $record) {
             array_push($programselectlist, $record->idprogram);
         }

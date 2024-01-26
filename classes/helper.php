@@ -121,9 +121,9 @@ class helper {
 
         $sql = <<<END
         SELECT title, executable, originalname, path, display
-        FROM {quiz_seb_program}
-        INNER JOIN {quiz_seb_program_quiz} ON {quiz_seb_program}.id = {quiz_seb_program_quiz}.idprogram
-        WHERE {quiz_seb_program_quiz}.idquiz = :idquiz
+        FROM {quizaccess_seb_program}
+        INNER JOIN {quizaccess_seb_program_quiz} ON {quizaccess_seb_program}.id = {quizaccess_seb_program_quiz}.idprogram
+        WHERE {quizaccess_seb_program_quiz}.idquiz = :idquiz
         END;
 
         $records = $DB->get_records_sql($sql, ['idquiz' => $idquiz]);

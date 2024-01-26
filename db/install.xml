@@ -4,7 +4,7 @@
     xsi:noNamespaceSchemaLocation="../../../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-    <TABLE NAME="quiz_seb_program" COMMENT="Program">
+    <TABLE NAME="quizaccess_seb_program" COMMENT="Program">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="title" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Title"/>
@@ -19,7 +19,7 @@
         <KEY NAME="courseid" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="quiz_seb_program_dependecy" COMMENT="Program dependency">
+    <TABLE NAME="quizaccess_sebprogram_depend" COMMENT="Program dependency">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="idprogram" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
@@ -31,7 +31,7 @@
         <KEY NAME="idprogram_dependency" TYPE="foreign" FIELDS="idprogram_dependency" REFTABLE="quizaccess_seb_program" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="quiz_seb_program_quiz" COMMENT="Program and quiz">
+    <TABLE NAME="quizaccess_seb_program_quiz" COMMENT="Program and quiz">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="idprogram" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>

@@ -67,7 +67,7 @@ class template extends \core\form\persistent {
 
         $programid = $this->get_persistent()->get('id');
 
-        $recordprograms = $DB->get_records('quiz_seb_program', ['courseid' => -1]);
+        $recordprograms = $DB->get_records('quizaccess_seb_program', ['courseid' => -1]);
         foreach ($recordprograms as $record) {
             // Cuando es nuevo se listan todos y cuando es modificar se listan todos menos el programa que se encuantra en edicion.
             if ( ($programid > -1 && $record->id != $programid) || ($programid == -1)  ) {
@@ -125,7 +125,7 @@ class template extends \core\form\persistent {
 
     private function set_all_program_list($idprogram) {
         global $DB;
-        $this->recordsprogramselect = $DB->get_records('quiz_seb_program_dependecy', ['idprogram' => $idprogram]);
+        $this->recordsprogramselect = $DB->get_records('quizaccess_sebprogram_depend', ['idprogram' => $idprogram]);
         foreach ($this->recordsprogramselect as $record) {
             array_push($this->programselectlist, $record->idprogram_dependency);
         }

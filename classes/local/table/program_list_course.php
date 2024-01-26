@@ -123,7 +123,7 @@ class program_list_course extends \flexible_table {
 
     protected function col_numberofuses(program $data) : string {
         global $DB;
-        $count = $DB->count_records("quiz_seb_program_quiz", ['idprogram' => $data->get("id")]);
+        $count = $DB->count_records("quizaccess_seb_program_quiz", ['idprogram' => $data->get("id")]);
         if ($count == 0) {
             return $data->get("numberofuses");
         } else {
@@ -139,7 +139,7 @@ class program_list_course extends \flexible_table {
      */
     protected function col_actions(program $data) : string {
         global $DB;
-        $count = $DB->count_records("quiz_seb_program_quiz", ['idprogram' => $data->get("id")]);
+        $count = $DB->count_records("quizaccess_seb_program_quiz", ['idprogram' => $data->get("id")]);
         $actions = [];
 
         if ($data->get('courseid') != -1) {

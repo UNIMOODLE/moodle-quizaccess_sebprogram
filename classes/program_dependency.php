@@ -22,7 +22,7 @@ use rest;
 class program_dependency extends persistent {
 
     /** Table name for the persistent. */
-    const TABLE = 'quiz_seb_program_dependecy';
+    const TABLE = 'quizaccess_sebprogram_depend';
 
     /** @var property_list $plist The SEB config represented as a Property List object. */
     private $plistprogram;

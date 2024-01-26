@@ -45,7 +45,7 @@ class restore_quizaccess_sebprogram_subplugin extends restore_mod_quiz_access_su
         $paths = [];
 
         $elename = $this->get_namefor('');
-        $elepath = $this->get_pathfor('/quiz_seb_program_quiz');
+        $elepath = $this->get_pathfor('/quizaccess_seb_program_quiz');
         $paths[] = new restore_path_element($elename, $elepath);
 
         return $paths;
@@ -60,6 +60,6 @@ class restore_quizaccess_sebprogram_subplugin extends restore_mod_quiz_access_su
 
         $data = (object)$data;
         $data->quizid = $this->get_new_parentid('quiz');
-        $DB->insert_record('quiz_seb_program_quiz', $data);
+        $DB->insert_record('quizaccess_seb_program_quiz', $data);
     }
 }

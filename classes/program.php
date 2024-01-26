@@ -29,7 +29,7 @@ use rest;
 class program extends persistent {
 
     /** Table name for the persistent. */
-    const TABLE = 'quiz_seb_program';
+    const TABLE = 'quizaccess_seb_program';
 
     /** @var property_list $plist The SEB config represented as a Property List object. */
     private $plistprogram;
@@ -109,7 +109,7 @@ class program extends persistent {
             $resultprogramquiz = empty($programandquiz);
         }
 
-        if ($resultprogramquiz ) {
+        if ($resultprogramoriginal && $resultprogramdependency && $resultprogramquiz) {
             return true;
         } else {
             return false;
@@ -121,9 +121,9 @@ class program extends persistent {
         global $DB;
 
         $sql = <<<END
-        SELECT * FROM mdl_quiz_seb_program
-        WHERE mdl_quiz_seb_program.display = 1 AND
-        (mdl_quiz_seb_program.courseid = -1 OR mdl_quiz_seb_program.courseid = $courseid);
+        SELECT * FROM mdl_quizaccess_seb_program
+        WHERE mdl_quizaccess_seb_program.display = 1 AND
+        (mdl_quizaccess_seb_program.courseid = -1 OR mdl_quizaccess_seb_program.courseid = $courseid);
         END;
 
         $records = $DB->get_records_sql($sql);
@@ -145,9 +145,9 @@ class program extends persistent {
         global $DB;
 
         $sql = <<<END
-        SELECT * FROM mdl_quiz_seb_program JOIN mdl_quiz_seb_program_dependecy
-        ON mdl_quiz_seb_program.id = mdl_quiz_seb_program_dependecy.idprogram_dependency
-        WHERE mdl_quiz_seb_program_dependecy.idprogram = $programid ;
+        SELECT * FROM mdl_quizaccess_seb_program JOIN mdl_quizaccess_sebprogram_depend
+        ON mdl_quizaccess_seb_program.id = mdl_quizaccess_sebprogram_depend.idprogram_dependency
+        WHERE mdl_quizaccess_sebprogram_depend.idprogram = $programid ;
         END;
 
         $results = $DB->get_records_sql($sql);
