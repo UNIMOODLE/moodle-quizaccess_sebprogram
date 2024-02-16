@@ -120,11 +120,10 @@ class program extends persistent {
     public static function get_records_course($courseid = [], $sort = '', $returnrecords = false) {
         global $DB;
 
-        $sql = <<<END
-        SELECT * FROM mdl_quizaccess_seb_program
-        WHERE mdl_quizaccess_seb_program.display = 1 AND
-        (mdl_quizaccess_seb_program.courseid = -1 OR mdl_quizaccess_seb_program.courseid = $courseid);
-        END;
+        $sql = "SELECT *
+                  FROM {quizaccess_seb_program} sp
+                 WHERE sp.display = 1
+                       AND (sp.courseid = -1 OR sp.courseid = $courseid)";
 
         $records = $DB->get_records_sql($sql);
 
@@ -144,11 +143,11 @@ class program extends persistent {
     public static function get_records_generic_dependency($programid = 0) {
         global $DB;
 
-        $sql = <<<END
-        SELECT * FROM mdl_quizaccess_seb_program JOIN mdl_quizaccess_sebprogram_depend
-        ON mdl_quizaccess_seb_program.id = mdl_quizaccess_sebprogram_depend.idprogram_dependency
-        WHERE mdl_quizaccess_sebprogram_depend.idprogram = $programid ;
-        END;
+        $sql = "SELECT *
+                  FROM {quizaccess_seb_program} sp
+                  JOIN {quizaccess_sebprogram_depend} sd
+                    ON sp.id = sd.idprogram_dependency
+                 WHERE sd.idprogram = $programid";
 
         $results = $DB->get_records_sql($sql);
 

@@ -41,7 +41,7 @@ require_once($CFG->dirroot . '/mod/quiz/backup/moodle2/backup_mod_quiz_access_su
 class backup_quizaccess_sebprogram_subplugin extends backup_mod_quiz_access_subplugin {
 
     protected function define_quiz_subplugin_structure() {
-        //sebprogram dependency child sebprogram, 2 ids con sql set source sql.
+        // sebprogram dependency child sebprogram, 2 ids con sql set source sql.
         parent::define_quiz_subplugin_structure();
         $quizid = backup::VAR_ACTIVITYID;
 

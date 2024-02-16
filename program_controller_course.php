@@ -290,7 +290,7 @@ class program_controller_course {
         $this->display_all_records();
 
         // JS for Template management.
-        //$PAGE->requires->js_call_amd('quizaccess_sebprogram/managetemplates', 'setup');
+        // $PAGE->requires->js_call_amd('quizaccess_sebprogram/managetemplates', 'setup');
 
         $this->footer();
     }
