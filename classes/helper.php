@@ -12,8 +12,24 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+// Project implemented by the \"Recovery, Transformation and Resilience Plan.
+// Funded by the European Union - Next GenerationEU\".
+//
+// Produced by the UNIMOODLE University Group: Universities of
+// Valladolid, Complutense de Madrid, UPV/EHU, León, Salamanca,
+// Illes Balears, Valencia, Rey Juan Carlos, La Laguna, Zaragoza, Málaga,
+// Córdoba, Extremadura, Vigo, Las Palmas de Gran Canaria y Burgos.
 
+/**
+ * Version details
+ *
+ * @package    quizaccess_sebprogram
+ * @copyright  2023 Proyecto UNIMOODLE
+ * @author     UNIMOODLE Group (Coordinator) <direccion.area.estrategia.digital@uva.es>
+ * @author     ISYC <soporte@isyc.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 namespace quizaccess_sebprogram;
 
  use CFPropertyList\CFPropertyList;
@@ -26,13 +42,10 @@ namespace quizaccess_sebprogram;
  use CFPropertyList\CFString;
  use CFPropertyList\CFType;
  use quizaccess_seb\property_list;
- use quizaccess_seb\quiz_settings;
+ use quizaccess_sebprogram\quiz_settings;
 
 /**
  * Helper class.
- *
- * @copyright  2020 Catalyst IT
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class helper {
     /**
@@ -92,6 +105,8 @@ class helper {
      * @return string SEB config string.
      */
     public static function get_seb_config_content(string $cmid) : string {
+        global $DB;
+
         // Try and get the course module.
         $cm = get_coursemodule_from_id('quiz', $cmid, 0, false, MUST_EXIST);
 
@@ -105,26 +120,25 @@ class helper {
         }
 
         $config = self::attach_extra_config_content($config, $cm->instance);
-
         return $config;
     }
 
+
     /**
-     * Attach extra elements to seb config.
+     * Attach extra config content to the given config based on the quiz ID.
      *
-     * @param string actual config
-     * @param string quiz id
+     * @param mixed $config description
+     * @param mixed $idquiz description
+     * @return mixed
      */
     private static function attach_extra_config_content($config, $idquiz) {
 
         global $DB;
 
-        $sql = <<<END
-        SELECT title, executable, originalname, path, display
-        FROM {quizaccess_seb_program}
-        INNER JOIN {quizaccess_seb_program_quiz} ON {quizaccess_seb_program}.id = {quizaccess_seb_program_quiz}.idprogram
-        WHERE {quizaccess_seb_program_quiz}.idquiz = :idquiz
-        END;
+        $sql = "SELECT sp.title, sp.executable, sp.originalname, sp.path, sp.display
+                  FROM {quizaccess_seb_program} sp
+                  JOIN {quizaccess_seb_program_quiz} sq ON sp.id = sq.idprogram
+                 WHERE sq.idquiz = :idquiz";
 
         $records = $DB->get_records_sql($sql, ['idquiz' => $idquiz]);
 
@@ -133,11 +147,13 @@ class helper {
         $entries = [];
         foreach ($records as $record) {
             $entry = new CFDictionary([
+                'active' => new CFBoolean("true"),
+                'iconInTaskbar' => new CFBoolean("true"),
+                'os' => new CFNumber(1),
                 'title' => new CFString($record->title),
                 'executable' => new CFString($record->executable),
                 'originalName' => new CFString($record->originalname),
                 'path' => new CFString($record->path),
-                'display' => new CFNumber($record->display),
             ]);
 
             $entries[] = $entry;
@@ -149,6 +165,39 @@ class helper {
 
         return $config;
     }
+    /**
+     * A helper function to get a list of seb config file headers.
+     *
+     * @param int|null $expiretime  Unix timestamp
+     * @return array
+     */
+    public static function get_seb_file_headers(int $expiretime = null) : array {
+        if (is_null($expiretime)) {
+            $expiretime = time();
+        }
+        $headers = [];
+        $headers[] = 'Cache-Control: private, max-age=1, no-transform';
+        $headers[] = 'Expires: '. gmdate('D, d M Y H:i:s', $expiretime) .' GMT';
+        $headers[] = 'Pragma: no-cache';
+        $headers[] = 'Content-Disposition: attachment; filename=config.seb';
+        $headers[] = 'Content-Type: application/seb';
+
+        return $headers;
+    }
+    /**
+     * Serve a file to browser for download.
+     *
+     * @param string $contents Contents of file.
+     */
+    public static function send_seb_config_file(string $contents) {
+        // We can now send the file back to the browser.
+        foreach (self::get_seb_file_headers() as $header) {
+            header($header);
+        }
+
+        echo($contents);
+    }
+
 
 }
 

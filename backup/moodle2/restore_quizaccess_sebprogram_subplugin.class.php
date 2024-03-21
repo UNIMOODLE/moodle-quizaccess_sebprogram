@@ -12,14 +12,23 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+// Project implemented by the \"Recovery, Transformation and Resilience Plan.
+// Funded by the European Union - Next GenerationEU\".
+//
+// Produced by the UNIMOODLE University Group: Universities of
+// Valladolid, Complutense de Madrid, UPV/EHU, León, Salamanca,
+// Illes Balears, Valencia, Rey Juan Carlos, La Laguna, Zaragoza, Málaga,
+// Córdoba, Extremadura, Vigo, Las Palmas de Gran Canaria y Burgos.
 
 /**
- * Restore code for the quizaccess_sebprogram plugin.
+ * Version details
  *
- * @package   quizaccess_sebprogram
- * @copyright 2010 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    quizaccess_sebprogram
+ * @copyright  2023 Proyecto UNIMOODLE
+ * @author     UNIMOODLE Group (Coordinator) <direccion.area.estrategia.digital@uva.es>
+ * @author     ISYC <soporte@isyc.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -39,14 +48,21 @@ require_once($CFG->dirroot . '/mod/quiz/backup/moodle2/restore_mod_quiz_access_s
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class restore_quizaccess_sebprogram_subplugin extends restore_mod_quiz_access_subplugin {
-
+    protected $lastinsertedid;
+    /**
+     * A method to define the structure of the quiz subplugin.
+     *
+     * @return array
+     */
     protected function define_quiz_subplugin_structure() {
 
         $paths = [];
 
-        $elename = $this->get_namefor('');
+        $elepath = $this->get_pathfor('/quizaccess_seb_program');
+        $paths[] = new restore_path_element("quizaccess_sebprogram", $elepath);
+
         $elepath = $this->get_pathfor('/quizaccess_seb_program_quiz');
-        $paths[] = new restore_path_element($elename, $elepath);
+        $paths[] = new restore_path_element("quizaccess_program_quiz", $elepath);
 
         return $paths;
     }
@@ -59,7 +75,24 @@ class restore_quizaccess_sebprogram_subplugin extends restore_mod_quiz_access_su
         global $DB;
 
         $data = (object)$data;
-        $data->quizid = $this->get_new_parentid('quiz');
+        $data->courseid = $this->step->get_task()->get_courseid();
+
+        $existingrecord = $DB->get_record('quizaccess_seb_program', array('courseid' => $data->courseid));
+        if (!$existingrecord) {
+            $this->lastinsertedid = $DB->insert_record('quizaccess_seb_program', $data);
+        } else {
+            $this->lastinsertedid = $existingrecord->id;
+        }
+    }
+
+
+    public function process_quizaccess_program_quiz($data) {
+        global $DB;
+        $data = (object)$data;
+        $data->idquiz = $this->get_new_parentid('quiz');
+
+        $data->idprogram = $this->lastinsertedid;
         $DB->insert_record('quizaccess_seb_program_quiz', $data);
+
     }
 }

@@ -12,15 +12,24 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+// Project implemented by the \"Recovery, Transformation and Resilience Plan.
+// Funded by the European Union - Next GenerationEU\".
+//
+// Produced by the UNIMOODLE University Group: Universities of
+// Valladolid, Complutense de Madrid, UPV/EHU, León, Salamanca,
+// Illes Balears, Valencia, Rey Juan Carlos, La Laguna, Zaragoza, Málaga,
+// Córdoba, Extremadura, Vigo, Las Palmas de Gran Canaria y Burgos.
 
 /**
- * Serves an encrypted/unencrypted string as a file for download.
+ * Version details
  *
  * @package    quizaccess_sebprogram
+ * @copyright  2023 Proyecto UNIMOODLE
+ * @author     UNIMOODLE Group (Coordinator) <direccion.area.estrategia.digital@uva.es>
+ * @author     ISYC <soporte@isyc.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 namespace quizaccess_sebprogram\local\table;
 
 use quizaccess_sebprogram\helper;
@@ -88,10 +97,11 @@ class program_list extends \flexible_table {
         return $data->get('title');
     }
 
+
     /**
      * Display executable column.
      *
-     * @param \quizaccess_sebprogram\template $data Template for this row.
+     * @param program $data description
      * @return string
      */
     protected function col_executable(program $data) : string {
@@ -101,13 +111,19 @@ class program_list extends \flexible_table {
     /**
      * Display originalname column.
      *
-     * @param \quizaccess_sebprogram\template $data Template for this row.
+     * @param program $data description
      * @return string
      */
     protected function col_originalname(program $data): string {
         return $data->get('originalname');
     }
 
+    /**
+     * Display dependecy column.
+     *
+     * @param program $data description
+     * @return string
+     */
     protected function col_dependency(program $data) : string {
 
         $results = program::get_records_generic_dependency($data->get('id'));
@@ -120,9 +136,9 @@ class program_list extends \flexible_table {
     }
 
     /**
-     * Display actions column.
+     * A description of the entire PHP function.
      *
-     * @param \quizaccess_sebprogram\program
+     * @param program $data description
      * @return string
      */
     protected function col_actions(program $data) : string {

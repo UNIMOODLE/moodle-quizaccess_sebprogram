@@ -12,14 +12,23 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+// Project implemented by the \"Recovery, Transformation and Resilience Plan.
+// Funded by the European Union - Next GenerationEU\".
+//
+// Produced by the UNIMOODLE University Group: Universities of
+// Valladolid, Complutense de Madrid, UPV/EHU, León, Salamanca,
+// Illes Balears, Valencia, Rey Juan Carlos, La Laguna, Zaragoza, Málaga,
+// Córdoba, Extremadura, Vigo, Las Palmas de Gran Canaria y Burgos.
 
 /**
- * Backup code for the quizaccess_sebprogram plugin.
+ * Version details
  *
- * @package   quizaccess_sebprogram
- * @copyright 2011 The Open University
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    quizaccess_sebprogram
+ * @copyright  2023 Proyecto UNIMOODLE
+ * @author     UNIMOODLE Group (Coordinator) <direccion.area.estrategia.digital@uva.es>
+ * @author     ISYC <soporte@isyc.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -40,8 +49,13 @@ require_once($CFG->dirroot . '/mod/quiz/backup/moodle2/backup_mod_quiz_access_su
  */
 class backup_quizaccess_sebprogram_subplugin extends backup_mod_quiz_access_subplugin {
 
+    /**
+     * Defines the quiz subplugin structure.
+     *
+     * @return mixed
+     */
     protected function define_quiz_subplugin_structure() {
-        // sebprogram dependency child sebprogram, 2 ids con sql set source sql.
+        // Sebprogram dependency child sebprogram, 2 ids con sql set source sql.
         parent::define_quiz_subplugin_structure();
         $quizid = backup::VAR_ACTIVITYID;
 

@@ -12,15 +12,24 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+// Project implemented by the \"Recovery, Transformation and Resilience Plan.
+// Funded by the European Union - Next GenerationEU\".
+//
+// Produced by the UNIMOODLE University Group: Universities of
+// Valladolid, Complutense de Madrid, UPV/EHU, León, Salamanca,
+// Illes Balears, Valencia, Rey Juan Carlos, La Laguna, Zaragoza, Málaga,
+// Córdoba, Extremadura, Vigo, Las Palmas de Gran Canaria y Burgos.
 
 /**
- * Form for manipulating with the template records.
+ * Version details
  *
  * @package    quizaccess_sebprogram
+ * @copyright  2023 Proyecto UNIMOODLE
+ * @author     UNIMOODLE Group (Coordinator) <direccion.area.estrategia.digital@uva.es>
+ * @author     ISYC <soporte@isyc.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 namespace quizaccess_sebprogram\local\form;
 
 use quizaccess_sebprogram\program;
@@ -126,14 +135,29 @@ class template_course extends \core\form\persistent {
         return $newerrors;
     }
 
+    /**
+     * Get the program select list.
+     *
+     * @return array
+     */
     public function get_program_select_list() {
         return $this->programselectlist;
     }
 
+    /**
+     * Get the records program select.
+     *
+     * @return recordsprogramselect
+     */
     public function get_records_program_select() {
         return $this->recordsprogramselect;
     }
 
+    /**
+     * Sets the all program list for a given program ID.
+     *
+     * @param int $idprogram The ID of the program.
+     */
     private function set_all_program_list($idprogram) {
         global $DB;
         $this->recordsprogramselect = $DB->get_records('quizaccess_sebprogram_depend', ['idprogram' => $idprogram]);

@@ -12,8 +12,24 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+// Project implemented by the \"Recovery, Transformation and Resilience Plan.
+// Funded by the European Union - Next GenerationEU\".
+//
+// Produced by the UNIMOODLE University Group: Universities of
+// Valladolid, Complutense de Madrid, UPV/EHU, León, Salamanca,
+// Illes Balears, Valencia, Rey Juan Carlos, La Laguna, Zaragoza, Málaga,
+// Córdoba, Extremadura, Vigo, Las Palmas de Gran Canaria y Burgos.
 
+/**
+ * Version details
+ *
+ * @package    quizaccess_sebprogram
+ * @copyright  2023 Proyecto UNIMOODLE
+ * @author     UNIMOODLE Group (Coordinator) <direccion.area.estrategia.digital@uva.es>
+ * @author     ISYC <soporte@isyc.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 namespace quizaccess_sebprogram;
 
 use core\notification;
@@ -21,9 +37,6 @@ use quizaccess_sebprogram\local\table\program_list;
 
 /**
  * Class for manipulating with the template records.
- *
- * @package   quizaccess_sebprogram
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class program_controller {
     /**
@@ -104,6 +117,13 @@ class program_controller {
         return new program($id, $data);
     }
 
+    /**
+     * Get instance of program_dependency.
+     *
+     * @param int $id description
+     * @param \stdClass $data description
+     * @return program_dependency
+     */
     private function get_instance_dependency($id = 0, \stdClass $data = null) {
         return new program_dependency($id, $data);
     }
@@ -273,9 +293,6 @@ class program_controller {
         $this->print_add_button();
         $this->display_all_records();
 
-        // JS for Template management.
-        // $PAGE->requires->js_call_amd('quizaccess_sebprogram/managetemplates', 'setup');
-
         $this->footer();
     }
 
@@ -307,14 +324,24 @@ class program_controller {
         echo $this->output->footer();
     }
 
+
     /**
-     * Returns a text for create new record button.
+     * Get the text for the create program button.
+     *
      * @return string
      */
     protected function get_create_program_button_text() : string {
         return get_string('addprogram', 'quizaccess_sebprogram');
     }
 
+    /**
+     * Create program dependency
+     *
+     * @param datatype $idprogram description
+     * @param datatype $insert description
+     * @throws Some_Exception_Class description of exception
+     * @return Some_Return_Value
+     */
     private function create_program_dependency($idprogram, $insert) {
         foreach ($insert as $value) {
             $data['idprogram'] = $idprogram;
@@ -325,6 +352,15 @@ class program_controller {
         }
     }
 
+    /**
+     * Delete program dependency.
+     *
+     * @param datatype $idprogram description
+     * @param datatype $delete description
+     * @param array $records description
+     * @throws Some_Exception_Class description of exception
+     * @return Some_Return_Value
+     */
     private function delete_program_dependency($idprogram, $delete, $records) {
 
         $keysrecord = array_keys($records);

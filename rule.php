@@ -12,14 +12,23 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+// Project implemented by the \"Recovery, Transformation and Resilience Plan.
+// Funded by the European Union - Next GenerationEU\".
+//
+// Produced by the UNIMOODLE University Group: Universities of
+// Valladolid, Complutense de Madrid, UPV/EHU, León, Salamanca,
+// Illes Balears, Valencia, Rey Juan Carlos, La Laguna, Zaragoza, Málaga,
+// Córdoba, Extremadura, Vigo, Las Palmas de Gran Canaria y Burgos.
 
 /**
- * Implementaton of the quizaccess_sebprogram plugin.
+ * Version details
  *
- * @package   quizaccess_sebprogram
- * @copyright 2011 The Open University
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    quizaccess_sebprogram
+ * @copyright  2023 Proyecto UNIMOODLE
+ * @author     UNIMOODLE Group (Coordinator) <direccion.area.estrategia.digital@uva.es>
+ * @author     ISYC <soporte@isyc.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 use quizaccess_sebprogram\program;
@@ -59,6 +68,13 @@ class quizaccess_sebprogram extends quiz_access_rule_base {
         return new self($quizobj, $timenow, $accessmanager);
     }
 
+    /**
+     * Get the link for the quiz access rule SEB program.
+     *
+     * @param bool $seb Whether to use SEB scheme
+     * @param bool $secure Whether to use secure scheme
+     * @return string The generated link URL
+     */
     public function get_link(bool $seb = false, bool $secure = true) {
 
         $url = new moodle_url('/mod/quiz/accessrule/sebprogram/config.php?cmid='. $this->quiz->cmid);
@@ -108,6 +124,12 @@ class quizaccess_sebprogram extends quiz_access_rule_base {
 
     }
 
+    /**
+     * Add settings form fields to the quiz form.
+     *
+     * @param mod_quiz_mod_form $quizform The quiz form object
+     * @param MoodleQuickForm $mform The form object
+     */
     public static function add_settings_form_fields(
             mod_quiz_mod_form $quizform, MoodleQuickForm $mform) {
                 global $DB, $PAGE;
@@ -158,7 +180,11 @@ class quizaccess_sebprogram extends quiz_access_rule_base {
 
     }
 
-    // Se ejecuta al salvar el cuestionario.
+    /**
+     * Save settings for the quiz.
+     *
+     * @param object $quiz The quiz object
+     */
     public static function save_settings($quiz) {
         global $DB;
 
@@ -197,7 +223,13 @@ class quizaccess_sebprogram extends quiz_access_rule_base {
         }
     }
 
-    // Se ejecuta al eliminar el cuestionario.
+    /**
+     * Delete settings.
+     *
+     * @param datatype $quiz description
+     * @throws Some_Exception_Class description of exception
+     * @return Some_Return_Value
+     */
     public static function delete_settings($quiz) {
 
     }

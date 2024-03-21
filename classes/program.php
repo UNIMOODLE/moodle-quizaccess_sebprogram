@@ -12,12 +12,22 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+// Project implemented by the \"Recovery, Transformation and Resilience Plan.
+// Funded by the European Union - Next GenerationEU\".
+//
+// Produced by the UNIMOODLE University Group: Universities of
+// Valladolid, Complutense de Madrid, UPV/EHU, León, Salamanca,
+// Illes Balears, Valencia, Rey Juan Carlos, La Laguna, Zaragoza, Málaga,
+// Córdoba, Extremadura, Vigo, Las Palmas de Gran Canaria y Burgos.
 
 /**
- * Serves an encrypted/unencrypted string as a file for download.
+ * Version details
  *
  * @package    quizaccess_sebprogram
+ * @copyright  2023 Proyecto UNIMOODLE
+ * @author     UNIMOODLE Group (Coordinator) <direccion.area.estrategia.digital@uva.es>
+ * @author     ISYC <soporte@isyc.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -25,8 +35,11 @@ namespace quizaccess_sebprogram;
 
 use core\persistent;
 use rest;
-
+/**
+ * A persistent class to store the SEB program details.
+ */
 class program extends persistent {
+
 
     /** Table name for the persistent. */
     const TABLE = 'quizaccess_seb_program';
@@ -34,6 +47,11 @@ class program extends persistent {
     /** @var property_list $plist The SEB config represented as a Property List object. */
     private $plistprogram;
 
+    /**
+     * The id of the course this program belongs to.
+     *
+     * @var int
+     */
     private $idcourse;
 
     /**
@@ -117,15 +135,23 @@ class program extends persistent {
     }
 
 
+    /**
+     * Get records for a specific course.
+     *
+     * @param array $courseid
+     * @param string $sort
+     * @param bool $returnrecords
+     * @return array
+     */
     public static function get_records_course($courseid = [], $sort = '', $returnrecords = false) {
         global $DB;
 
         $sql = "SELECT *
                   FROM {quizaccess_seb_program} sp
                  WHERE sp.display = 1
-                       AND (sp.courseid = -1 OR sp.courseid = $courseid)";
+                       AND (sp.courseid = -1 OR sp.courseid = :courseid)";
 
-        $records = $DB->get_records_sql($sql);
+        $records = $DB->get_records_sql($sql, ['courseid' => $courseid]);
 
         if ($returnrecords) {
             return $records;
@@ -140,6 +166,12 @@ class program extends persistent {
         return $instances;
     }
 
+    /**
+     * Retrieve records based on a generic dependency for a given program ID.
+     *
+     * @param int $programid The ID of the program
+     * @return array|null The records based on the generic dependency for the given program ID
+     */
     public static function get_records_generic_dependency($programid = 0) {
         global $DB;
 
@@ -147,9 +179,9 @@ class program extends persistent {
                   FROM {quizaccess_seb_program} sp
                   JOIN {quizaccess_sebprogram_depend} sd
                     ON sp.id = sd.idprogram_dependency
-                 WHERE sd.idprogram = $programid";
+                 WHERE sd.idprogram = :programid";
 
-        $results = $DB->get_records_sql($sql);
+        $results = $DB->get_records_sql($sql, ['programid' => $programid]);
 
         return $results;
     }
