@@ -328,7 +328,7 @@ class program_controller_course {
         $urlquiz = $_SESSION['urleditquiz'];
         echo $this->output->single_button(
             $urlquiz,
-            'Return to Quiz'
+            get_string('returntoquiz', 'quizaccess_sebprogram'),
         );
         echo $this->output->single_button(
             new \moodle_url(static::get_base_url(), ['action' => self::ACTION_ADD]),

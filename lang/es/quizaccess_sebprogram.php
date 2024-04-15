@@ -74,3 +74,4 @@ $string['seb:managetemplates'] = 'Gestionar configuración del SEB';
 $string['sebprogram:manageprograms'] = 'Gestionar configuración de programas del SEB';
 $string['seb_requiresafeexambrowser'] = 'Requiere el uso del Safe Exam Browser';
 $string['used'] = 'En uso';
+$string['returntoquiz'] = 'Volver al Quiz';
