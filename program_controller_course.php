@@ -286,12 +286,12 @@ class program_controller_course {
         require_sesskey();
         $instance = $this->get_instance($id);
 
-        $dependencyrecords = $DB->get_records("quiz_seb_program_dependecy", ['idprogram_dependency' => $id]);
+        $dependencyrecords = $DB->get_records("quizaccess_sebprogram_depend", ['idprogram_dependency' => $id]);
 
         if ($instance->can_delete()) {
             $instance->delete();
             foreach ($dependencyrecords as $dependencyrecord) {
-                $DB->delete_records("quiz_seb_program_dependecy", ['id' => $dependencyrecord->id]);
+                $DB->delete_records("quizaccess_sebprogram_depend", ['id' => $dependencyrecord->id]);
             }
             notification::success(get_string('deleted'));
 
