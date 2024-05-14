@@ -94,7 +94,7 @@ class backup_quizaccess_sebprogram_subplugin extends backup_mod_quiz_access_subp
         $subpluginprogramssettings->set_source_table(\quizaccess_sebprogram\program::TABLE,
             ['courseid' => backup::VAR_COURSEID]);
         $subpluginquizprogramssettings->set_source_table(\quizaccess_sebprogram\program_quiz::TABLE,
-        ['idquiz' => $quizid]);
+            ['idquiz' => $quizid]);
         $subplugindependenciessettings->set_source_table(\quizaccess_sebprogram\program_dependency::TABLE, []);
         $subplugindependenciessettings->annotate_ids('idprogram', 'idprogram');
         $subplugindependenciessettings->annotate_ids('idprogram_dependency', 'idprogram_dependency');

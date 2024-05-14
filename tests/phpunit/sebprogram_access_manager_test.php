@@ -156,6 +156,10 @@ class sebprogram_access_manager_test extends \advanced_testcase {
         $reflectionmethod = new \ReflectionMethod(quiz_settings::class, 'after_create');
         $reflectionmethod->setAccessible(true);
         $persistentprogram = $reflectionmethod->invoke($quizsettings);
+        
+        $reflectionmethod = new \ReflectionMethod(quiz_settings::class, 'after_update');
+        $reflectionmethod->setAccessible(true);
+        $persistentprogram = $reflectionmethod->invoke($quizsettings, true);
 
         $reflectionmethod = new \ReflectionMethod(quiz_settings::class, 'before_create');
         $reflectionmethod->setAccessible(true);
@@ -168,8 +172,17 @@ class sebprogram_access_manager_test extends \advanced_testcase {
         $reflectionmethod = new \ReflectionMethod(quiz_settings::class, 'before_validate');
         $reflectionmethod->setAccessible(true);
         $persistentprogram = $reflectionmethod->invoke($quizsettings);
-        
+
+        $reflectionmethod = new \ReflectionMethod(quiz_settings::class, 'before_delete');
+        $reflectionmethod->setAccessible(true);
+        $persistentprogram = $reflectionmethod->invoke($quizsettings);
+
+        $this->assertIsBool($accessmanager->should_validate_browser_exam_key());
+        $accessmanager->set_session_access(true);
+
+        $this->assertIsBool($accessmanager->validate_browser_exam_key());
         $this->assertNotNull(get_quiz_id($cm->id));
+
     }
     public static function dataprovider(): array {
         return [

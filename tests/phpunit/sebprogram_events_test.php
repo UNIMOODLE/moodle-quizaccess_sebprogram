@@ -105,6 +105,7 @@ class sebprogram_events_test extends \advanced_testcase {
         $this->assertNotNull($event->get_objectid_mapping());
         $this->assertIsArray($event->get_other_mapping());
 
+
     }
     public static function dataprovider(): array {
         return [

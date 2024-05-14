@@ -38,3 +38,6 @@ $plugin->version = 2024032001;
 $plugin->requires = 2022080100;
 $plugin->component = 'quizaccess_sebprogram';
 $plugin->maturity = MATURITY_STABLE;
+$plugin->dependencies = array(
+    'quizaccess_seb' => ANY_VERSION
+);

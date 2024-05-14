@@ -48,7 +48,7 @@ require_once($CFG->dirroot . '/mod/quiz/backup/moodle2/restore_mod_quiz_access_s
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class restore_quizaccess_sebprogram_subplugin extends restore_mod_quiz_access_subplugin {
-    protected $lastinsertedid;
+
     /**
      * A method to define the structure of the quiz subplugin.
      *
@@ -76,23 +76,39 @@ class restore_quizaccess_sebprogram_subplugin extends restore_mod_quiz_access_su
 
         $data = (object)$data;
         $data->courseid = $this->step->get_task()->get_courseid();
-
-        $existingrecord = $DB->get_record('quizaccess_seb_program', array('courseid' => $data->courseid));
-        if (!$existingrecord) {
-            $this->lastinsertedid = $DB->insert_record('quizaccess_seb_program', $data);
-        } else {
-            $this->lastinsertedid = $existingrecord->id;
+        // If its site level program we don't need to restore it.
+        if ($data->courseid != -1) {
+            $oldid = $data->id;
+            // Check that the program hasn't been restored in this course already to not duplicate it.
+            if (!$DB->get_record_select('quizaccess_seb_program',
+                    'courseid = ? AND ' . $DB->sql_compare_text('title') . ' = ?' ,
+                    [$data->courseid, $data->title], '*')) {
+                $newitemid = $DB->insert_record('quizaccess_seb_program', $data);
+                $this->set_mapping('quizaccess_seb_program', $oldid, $newitemid);
+            } else {
+                $newitemid = $DB->get_record_select('quizaccess_seb_program',
+                    'courseid = ? AND ' . $DB->sql_compare_text('title') . ' = ?' ,
+                    [$data->courseid, $data->title], '*')->id;
+                $this->set_mapping('quizaccess_seb_program', $oldid, $newitemid);
+            }
         }
     }
 
 
     public function process_quizaccess_program_quiz($data) {
         global $DB;
+
         $data = (object)$data;
+        $oldid = $data->id;
+        $oldprogramid = $data->idprogram;
         $data->idquiz = $this->get_new_parentid('quiz');
-
-        $data->idprogram = $this->lastinsertedid;
-        $DB->insert_record('quizaccess_seb_program_quiz', $data);
-
+        // We get the program id from the current course.
+        $idprogram = $this->get_mapping('quizaccess_seb_program', $data->idprogram)->newitemid;
+        // If the progrma dont exist in the course, it's a site level program so we just get it back from the data.
+        if (!$idprogram) {
+            $idprogram = $oldprogramid;
+        }
+        $data->idprogram = $idprogram;
+        $newitemid = $DB->insert_record('quizaccess_seb_program_quiz', $data);
     }
 }

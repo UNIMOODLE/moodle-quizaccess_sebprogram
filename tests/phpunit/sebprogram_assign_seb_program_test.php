@@ -88,6 +88,7 @@ class sebprogram_assign_seb_program_test extends \advanced_testcase {
         $dataprogram->executable = $datadecoded->executable;
         $dataprogram->originalname = $datadecoded->originalname;
         $dataprogram->path = $datadecoded->path;
+        $dataprogram->display = 1;
         $dataprogramid = $DB->insert_record('quizaccess_seb_program', $dataprogram);
 
         // Create quiz.
@@ -101,6 +102,9 @@ class sebprogram_assign_seb_program_test extends \advanced_testcase {
         // Asign  Program id - Quiz id.
         $DB->insert_record('quizaccess_seb_program_quiz', ['idprogram' => $dataprogramid, 'idquiz' => $cm->id]);
         $this->assertNotNull($DB->get_records('quizaccess_seb_program_quiz'));
+
+        $program = new quizaccess_sebprogram\program();
+        $this->assertNotNull($program->get_records_course($dataprogramid));
 
     }
     public static function dataprovider(): array {
