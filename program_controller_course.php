@@ -244,6 +244,10 @@ class program_controller_course {
                 if (empty($data->id)) { // Create program.
 
                     $data->courseid = $this->courseid;
+                    if ($this->program_unique_name_check($data)) {
+                        notification::error(get_string('duplicatetemplate', 'quizaccess_sebprogram'));
+                        redirect(new \moodle_url(static::get_base_url()));
+                    }
 
                     $persistent = $this->get_instance(0, $data);
                     $programcreated = $persistent->create();
@@ -402,4 +406,20 @@ class program_controller_course {
         }
     }
 
+    /**
+     * Searches for another program with the same name to prevent duplicates
+     * @param object $programdata program data
+     * @return bool indicating if record exists.
+     */
+    protected function program_unique_name_check($programdata) : bool {
+        global $DB;
+
+        $existsprogam = false;
+        if ($DB->get_record_select('quizaccess_seb_program',
+            'courseid = ? AND ' . $DB->sql_compare_text('title') . ' = ?' ,
+            [$programdata->courseid, $programdata->title], '*')) {
+                $existsprogam = true;
+            }
+        return $existsprogam;
+    }
 }

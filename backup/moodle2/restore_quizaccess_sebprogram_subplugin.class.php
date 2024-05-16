@@ -64,6 +64,9 @@ class restore_quizaccess_sebprogram_subplugin extends restore_mod_quiz_access_su
         $elepath = $this->get_pathfor('/quizaccess_seb_program_quiz');
         $paths[] = new restore_path_element("quizaccess_program_quiz", $elepath);
 
+        $elepath = $this->get_pathfor('/quizaccess_sebprogram_depend');
+        $paths[] = new restore_path_element("quizaccess_program_depend", $elepath);
+
         return $paths;
     }
 
@@ -75,10 +78,10 @@ class restore_quizaccess_sebprogram_subplugin extends restore_mod_quiz_access_su
         global $DB;
 
         $data = (object)$data;
+        $oldid = $data->id;
         $data->courseid = $this->step->get_task()->get_courseid();
         // If its site level program we don't need to restore it.
         if ($data->courseid != -1) {
-            $oldid = $data->id;
             // Check that the program hasn't been restored in this course already to not duplicate it.
             if (!$DB->get_record_select('quizaccess_seb_program',
                     'courseid = ? AND ' . $DB->sql_compare_text('title') . ' = ?' ,
@@ -90,6 +93,14 @@ class restore_quizaccess_sebprogram_subplugin extends restore_mod_quiz_access_su
                     'courseid = ? AND ' . $DB->sql_compare_text('title') . ' = ?' ,
                     [$data->courseid, $data->title], '*')->id;
                 $this->set_mapping('quizaccess_seb_program', $oldid, $newitemid);
+            }
+        } else {
+            // In case that the restore is made on another site, or that the programs were deleted.
+            if (!$DB->get_record_select('quizaccess_seb_program',
+                    'courseid = ? AND ' . $DB->sql_compare_text('title') . ' = ?' ,
+                    [-1, $data->title], '*')) {
+                    $newitemid = $DB->insert_record('quizaccess_seb_program', $data);
+                    $this->set_mapping('quizaccess_seb_program', $oldid, $newitemid);
             }
         }
     }
@@ -110,5 +121,23 @@ class restore_quizaccess_sebprogram_subplugin extends restore_mod_quiz_access_su
         }
         $data->idprogram = $idprogram;
         $newitemid = $DB->insert_record('quizaccess_seb_program_quiz', $data);
+    }
+
+    // Add dependency table
+    public function process_quizaccess_program_depend($data) {
+        global $DB;
+
+        $data = (object)$data;
+        $program = $this->get_mapping('quizaccess_seb_program', $data->idprogram);
+        // If the program is mapped (not site program) we restore it with the new references.
+        if ($program) {
+            $data->idprogram = $program->newitemid;
+            $data->idprogram_dependency = $this->get_mapping('quizaccess_seb_program', $data->idprogram_dependency)->newitemid;
+            // We make sure that the dependency has not been restored already in this course to not duplicate it.
+            if (!$DB->get_record('quizaccess_sebprogram_depend', ['idprogram' => $data->idprogram,
+                    'idprogram_dependency' => $data->idprogram_dependency, ], '*', IGNORE_MISSING)) {
+                $DB->insert_record('quizaccess_sebprogram_depend', $data);
+            }
+        }
     }
 }

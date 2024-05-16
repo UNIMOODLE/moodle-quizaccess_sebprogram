@@ -225,6 +225,10 @@ class program_controller {
 
                     $data->courseid = -1;
 
+                    if ($this->program_unique_name_check($data)) {
+                        notification::error(get_string('duplicatetemplate', 'quizaccess_sebprogram'));
+                        redirect(new \moodle_url('/admin/settings.php', ['section' => 'modsettingsquizcatsebprogram']));
+                    }
                     $persistent = $this->get_instance(0, $data);
                     $programcreated = $persistent->create();
 
@@ -374,4 +378,20 @@ class program_controller {
         }
     }
 
+    /**
+     * Searches for another program with the same name to prevent duplicates
+     * @param object $programdata program data
+     * @return bool indicating if record exists.
+     */
+    protected function program_unique_name_check($programdata) : bool {
+        global $DB;
+
+        $existsprogam = false;
+        if ($DB->get_record_select('quizaccess_seb_program',
+            'courseid = ? AND ' . $DB->sql_compare_text('title') . ' = ?' ,
+            [$programdata->courseid, $programdata->title], '*')) {
+                $existsprogam = true;
+            }
+        return $existsprogam;
+    }
 }
