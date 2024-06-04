@@ -222,6 +222,7 @@ class quizaccess_sebprogram extends quiz_access_rule_base {
             $persistent = new program_quiz(0, (object)$data);
             $persistent->create();
         }
+        purge_caches();
     }
 
     /**
