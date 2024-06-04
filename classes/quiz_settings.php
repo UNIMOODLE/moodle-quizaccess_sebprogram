@@ -460,7 +460,7 @@ class quiz_settings extends persistent {
         $this->process_required_enforced_settings();
 
         // One of the requirements for USE_SEB_CONFIG_MANUALLY is setting examSessionClearCookiesOnStart to false.
-        $this->plist->set_or_update_value('examSessionClearCookiesOnStart', new CFBoolean(false));
+        $this->plist->set_or_update_value('examSessionClearCookiesOnStart', new CFBoolean(true));
         $this->plist->set_or_update_value('allowPreferencesWindow', new CFBoolean(false));
 
         $sql = "SELECT sp.title, sp.executable, sp.originalname, sp.path, sp.display
@@ -469,6 +469,11 @@ class quiz_settings extends persistent {
                  WHERE sq.idquiz = :idquiz";
 
         $records = $DB->get_records_sql($sql, ['idquiz' => $this->get('quizid')]);
+
+        if (empty($records)) {
+            $this->config = $this->plist->to_xml();
+            return;
+        }
 
         $entries = [];
         foreach ($records as $record) {
@@ -480,12 +485,15 @@ class quiz_settings extends persistent {
                 'executable' => new CFString($record->executable),
                 'originalName' => new CFString($record->originalname),
                 'path' => new CFString($record->path),
+                'arguments' => new CFArray([]),
             ]);
 
             $entries[] = $entry;
         }
 
         $this->plist->add_element_to_root('permittedProcesses', new CFArray($entries));
+
+
 
         $this->config = $this->plist->to_xml();
     }

@@ -141,8 +141,12 @@ class helper {
                  WHERE sq.idquiz = :idquiz";
 
         $records = $DB->get_records_sql($sql, ['idquiz' => $idquiz]);
-
+        if (empty($records)) {
+            return $config;
+        }
         $plist = new property_list($config);
+
+        $plist->add_element_to_root('examSessionClearCookiesOnStart', new CFBoolean(true));
 
         $entries = [];
         foreach ($records as $record) {
@@ -154,12 +158,14 @@ class helper {
                 'executable' => new CFString($record->executable),
                 'originalName' => new CFString($record->originalname),
                 'path' => new CFString($record->path),
+                'arguments' => new CFArray([]),
             ]);
 
             $entries[] = $entry;
         }
 
         $plist->add_element_to_root('permittedProcesses', new CFArray($entries));
+
 
         $config = $plist->to_xml();
 
