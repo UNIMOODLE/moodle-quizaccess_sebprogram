@@ -232,6 +232,7 @@ class program_controller_course {
         if ($form->is_cancelled()) {
             redirect(new \moodle_url(static::get_base_url()));
         } else if ($data = $form->get_data()) {
+            $data->timemodified = time();
             unset($data->submitbutton);
             try {
 
@@ -248,7 +249,7 @@ class program_controller_course {
                         notification::error(get_string('duplicatetemplate', 'quizaccess_sebprogram'));
                         redirect(new \moodle_url(static::get_base_url()));
                     }
-
+                    $data->timecreated = time();
                     $persistent = $this->get_instance(0, $data);
                     $programcreated = $persistent->create();
 

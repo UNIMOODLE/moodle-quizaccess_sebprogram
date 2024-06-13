@@ -88,6 +88,12 @@ class program extends persistent {
                 'type' => PARAM_INT,
                 'default' => 0,
             ],
+            'timecreated' => [
+                'type' => PARAM_INT,
+            ],
+            'timemodified' => [
+                'type' => PARAM_INT,
+            ],
         ];
     }
 

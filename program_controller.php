@@ -213,6 +213,7 @@ class program_controller {
             redirect(new \moodle_url('/admin/settings.php', ['section' => 'modsettingsquizcatsebprogram']));
         } else if ($data = $form->get_data()) {
             unset($data->submitbutton);
+            $data->timemodified = time();
             try {
 
                 $selecteditems = $data->my_autocomplete_program;
@@ -229,6 +230,7 @@ class program_controller {
                         notification::error(get_string('duplicatetemplate', 'quizaccess_sebprogram'));
                         redirect(new \moodle_url('/admin/settings.php', ['section' => 'modsettingsquizcatsebprogram']));
                     }
+                    $data->timecreated = time();
                     $persistent = $this->get_instance(0, $data);
                     $programcreated = $persistent->create();
 
