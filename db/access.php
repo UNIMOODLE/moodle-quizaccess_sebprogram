@@ -30,7 +30,7 @@ defined('MOODLE_INTERNAL') || die();
 $capabilities = [
     'quizaccess/sebprogram:manageprograms' => [
         'captype' => 'write',
-        'contextlevel' => CONTEXT_SYSTEM,
+        'contextlevel' => CONTEXT_MODULE,
         'archetypes' => [
             'manager' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,

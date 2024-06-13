@@ -31,12 +31,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use mod_quiz\local\access_rule_base;
 use quizaccess_sebprogram\program;
 use quizaccess_sebprogram\program_quiz;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/mod/quiz/accessrule/accessrulebase.php');
 require_once($CFG->dirroot . '/mod/quiz/accessrule/seb/classes/access_manager.php');
 
 use quizaccess_seb\access_manager;
@@ -135,7 +135,7 @@ class quizaccess_sebprogram extends quiz_access_rule_base {
                 global $DB, $PAGE;
         $idquiz = $quizform->get_instance();
         $idcurse = $quizform->get_coursemodule() ? $quizform->get_coursemodule()->course : optional_param('course', -1, PARAM_INT);
-        if (has_capability('quizaccess/sebprogram:manageprograms',  context_course::instance($idcurse))) {
+        if (has_capability('quizaccess/sebprogram:manageprograms',  context_module::instance($PAGE->cm->id))) {
             $mform->addElement('header', 'sebprogramheader_my', get_string('pluginname', 'quizaccess_sebprogram'));
 
             $currenturl = $PAGE->url;
@@ -167,7 +167,7 @@ class quizaccess_sebprogram extends quiz_access_rule_base {
 
             if ($mform->elementExists("security")) {
                     $mform->removeElement("sebprogramheader_my", false);
-                if (has_capability('quizaccess/sebprogram:manageprograms', context_course::instance($idcurse))) {
+                if (has_capability('quizaccess/sebprogram:manageprograms', context_module::instance($PAGE->cm->id))) {
                     $mform->insertElementBefore($mform->removeElement("seb_program_button_admin_programs_course", false), 'security');
                     $mform->hideIf("seb_program_button_admin_programs_course", "seb_requiresafeexambrowser", "noteq",
                         settings_provider::USE_SEB_CONFIG_MANUALLY);
