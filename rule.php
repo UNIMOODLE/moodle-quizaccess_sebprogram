@@ -135,7 +135,14 @@ class quizaccess_sebprogram extends quiz_access_rule_base {
                 global $DB, $PAGE;
         $idquiz = $quizform->get_instance();
         $idcurse = $quizform->get_coursemodule() ? $quizform->get_coursemodule()->course : optional_param('course', -1, PARAM_INT);
-        if (has_capability('quizaccess/sebprogram:manageprograms',  context_module::instance($PAGE->cm->id))) {
+        $context = null;
+        if ($idquiz) {
+            $cm = $quizform->get_coursemodule();
+            $context = context_module::instance($cm->id);
+        } else {
+            $context = context_course::instance($idcurse);
+        }
+        if (has_capability('quizaccess/sebprogram:manageprograms',  $context)) {
             $mform->addElement('header', 'sebprogramheader_my', get_string('pluginname', 'quizaccess_sebprogram'));
 
             $currenturl = $PAGE->url;
@@ -167,7 +174,7 @@ class quizaccess_sebprogram extends quiz_access_rule_base {
 
             if ($mform->elementExists("security")) {
                     $mform->removeElement("sebprogramheader_my", false);
-                if (has_capability('quizaccess/sebprogram:manageprograms', context_module::instance($PAGE->cm->id))) {
+                if (has_capability('quizaccess/sebprogram:manageprograms', $context)) {
                     $mform->insertElementBefore($mform->removeElement("seb_program_button_admin_programs_course", false), 'security');
                     $mform->hideIf("seb_program_button_admin_programs_course", "seb_requiresafeexambrowser", "noteq",
                         settings_provider::USE_SEB_CONFIG_MANUALLY);
