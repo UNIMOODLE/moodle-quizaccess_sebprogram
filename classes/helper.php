@@ -146,7 +146,9 @@ class helper {
         }
         $plist = new property_list($config);
 
-        $plist->add_element_to_root('examSessionClearCookiesOnStart', new CFBoolean(true));
+        $plist->set_or_update_value('examSessionClearCookiesOnStart', new CFBoolean(false));
+        $plist->set_or_update_value('examSessionReconfigureAllow', new CFBoolean(true));
+        $plist->set_or_update_value('allowPreferencesWindow', new CFBoolean(false));
 
         $entries = [];
         foreach ($records as $record) {

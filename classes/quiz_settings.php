@@ -460,7 +460,7 @@ class quiz_settings extends persistent {
         $this->process_required_enforced_settings();
 
         // One of the requirements for USE_SEB_CONFIG_MANUALLY is setting examSessionClearCookiesOnStart to false.
-        $this->plist->set_or_update_value('examSessionClearCookiesOnStart', new CFBoolean(true));
+        $this->plist->set_or_update_value('examSessionClearCookiesOnStart', new CFBoolean(false));
         $this->plist->set_or_update_value('allowPreferencesWindow', new CFBoolean(false));
 
         $sql = "SELECT sp.title, sp.executable, sp.originalname, sp.path, sp.display
@@ -515,7 +515,8 @@ class quiz_settings extends persistent {
         $quizurl = new moodle_url($CFG->wwwroot . "/mod/quiz/view.php", ['id' => $this->get('cmid')]);
         $this->plist->set_or_update_value('startURL', new CFString($quizurl->out(true)));
         $this->plist->set_or_update_value('sendBrowserExamKey', new CFBoolean(true));
-
+        $this->plist->set_or_update_value('examSessionReconfigureAllow', new CFBoolean(true));
+        $this->plist->set_or_update_value('examSessionReconfigureConfigURL', new CFString($quizurl));
         // Use the modern WebView and JS API if the SEB version supports it.
         // Documentation: https://safeexambrowser.org/developer/seb-config-key.html .
         // "Set the key browserWindowWebView to the policy "Prefer Modern" (value 3)".
