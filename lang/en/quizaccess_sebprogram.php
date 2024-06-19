@@ -75,3 +75,10 @@ $string['sebprogram:manageprograms'] = 'Manage SEB configuration program';
 $string['seb_requiresafeexambrowser'] = 'Require the use of Safe Exam Browser';
 $string['used'] = 'In use';
 $string['returntoquiz'] = 'Return to Quiz';
+$string['title_help'] = 'Application title.';
+$string['executable_help'] = 'File name of the executable, which should not contain any parts of a file system path,
+    only the filename of the file (like calc.exe).';
+$string['originalname_help'] = 'Original file name of the executable. Some files
+    don\'t have this metadata information. If it is available, SEB will prioritize this string over the Executable file name string';
+$string['path_help'] = 'Path to the directory of the executable process excluding the file name.';
+$string['dependency_help'] = 'List of other programs, that this one need to work properly';

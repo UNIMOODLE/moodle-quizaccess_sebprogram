@@ -75,3 +75,10 @@ $string['sebprogram:manageprograms'] = 'Gestionar configuración de programas de
 $string['seb_requiresafeexambrowser'] = 'Requiere el uso del Safe Exam Browser';
 $string['used'] = 'En uso';
 $string['returntoquiz'] = 'Volver al Quiz';
+$string['title_help'] = 'Título de la aplicación.';
+$string['executable_help'] = 'Nombre de archivo del ejecutable, que no debe contener ninguna parte de una ruta del sistema de archivos,
+    sólo el nombre del archivo (ejemplo: calc.exe).';
+$string['originalname_help'] = 'Nombre original del archivo ejecutable. Algunos archivos
+    no tienen esta información de metadatos. Si está disponible, SEB dará prioridad a este valor sobre el el valor del \'Ejecutable\'.';
+$string['path_help'] = 'Ruta al directorio del ejecutable del proceso excluyendo el nombre del archivo.';
+$string['dependency_help'] = 'Lista de otros programas que son necesarios para que éste funcione correctamente.';

@@ -61,18 +61,22 @@ class template extends \core\form\persistent {
         global $DB;
 
         $mform->addElement('text', 'title', get_string('title', 'quizaccess_sebprogram'));
+        $mform->addHelpButton('title', 'title', 'quizaccess_sebprogram');
         $mform->addRule('title', get_string('required'), 'required', null, 'client');
         $mform->setType('title', PARAM_TEXT);
 
         $mform->addElement('text', 'executable', get_string('executable', 'quizaccess_sebprogram'));
+        $mform->addHelpButton('executable', 'executable', 'quizaccess_sebprogram');
         $mform->addRule('executable', get_string('required'), 'required', null, 'client');
         $mform->setType('executable', PARAM_TEXT);
 
         $mform->addElement('text', 'originalname', get_string('originalname', 'quizaccess_sebprogram'));
-        $mform->addRule('originalname', get_string('required'), 'required', null, 'client');
+        $mform->addHelpButton('originalname', 'originalname', 'quizaccess_sebprogram');
+        //$mform->addRule('originalname', get_string('required'), 'required', null, 'client');
         $mform->setType('originalname', PARAM_TEXT);
 
         $mform->addElement('text', 'path', get_string('path', 'quizaccess_sebprogram'));
+        $mform->addHelpButton('path', 'path', 'quizaccess_sebprogram');
         $mform->addRule('path', get_string('required'), 'required', null, 'client');
         $mform->setType('path', PARAM_TEXT);
 
@@ -91,6 +95,7 @@ class template extends \core\form\persistent {
         $options = ['multiple' => true];
         $mform->addElement('autocomplete', 'my_autocomplete_program', get_string('dependency', 'quizaccess_sebprogram'),
             $this->programlist, $options);
+        $mform->addHelpButton('my_autocomplete_program', 'dependency', 'quizaccess_sebprogram');
         $mform->setType('my_autocomplete_program', PARAM_RAW);
 
         // Si es un editar obtener los programas dependientes del seleccionnado.
