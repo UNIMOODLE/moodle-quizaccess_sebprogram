@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Entity model representing quiz settings for the seb plugin.
+ * Entity model representing quiz settings for the sebprogram plugin.
  *
  * @package    quizaccess_sebprogram
  * @author     Andrew Madden <andrewmadden@catalyst-au.net>
@@ -40,7 +40,7 @@ use quizaccess_seb\config_key;
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Entity model representing quiz settings for the seb plugin.
+ * Entity model representing quiz settings for the sebprogram plugin.
  *
  * @copyright  2020 Catalyst IT
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -195,7 +195,7 @@ class quiz_settings extends persistent {
      * This method gets data from cache before doing any DB calls.
      *
      * @param int $quizid Quiz id.
-     * @return false|\quizaccess_seb\quiz_settings
+     * @return false|\quizaccess_sebprogram\quiz_settings
      */
     public static function get_by_quiz_id(int $quizid) {
         if ($data = self::get_quiz_settings_cache()->get($quizid)) {
@@ -257,6 +257,7 @@ class quiz_settings extends persistent {
     private static function get_config_key_cache() : \cache_application {
         return \cache::make('quizaccess_sebprogram', 'configkey');
     }
+
 
     /**
      * Return SEB config cache instance.
@@ -514,11 +515,11 @@ class quiz_settings extends persistent {
 
         $quizurl = new moodle_url($CFG->wwwroot . "/mod/quiz/view.php", ['id' => $this->get('cmid')]);
         $this->plist->set_or_update_value('startURL', new CFString($quizurl->out(true)));
-        $this->plist->set_or_update_value('sendBrowserExamKey', new CFBoolean(true));
-        $this->plist->set_or_update_value('examSessionReconfigureAllow', new CFBoolean(true));
-        $this->plist->set_or_update_value('examSessionReconfigureConfigURL', new CFString($quizurl));
+        $this->plist->set_or_update_value('sendBrowserExamKey', new CFBoolean(false));
+        $this->plist->set_or_update_value('examSessionReconfigureAllow', new CFBoolean(false));
+        //$this->plist->set_or_update_value('examSessionReconfigureConfigURL', new CFString($quizurl));
         // Use the modern WebView and JS API if the SEB version supports it.
-        // Documentation: https://safeexambrowser.org/developer/seb-config-key.html .
+        // Documentation: https://safeexambrowser.org/developer/sebprogram-config-key.html .
         // "Set the key browserWindowWebView to the policy "Prefer Modern" (value 3)".
         $this->plist->set_or_update_value('browserWindowWebView', new CFNumber(3));
     }
