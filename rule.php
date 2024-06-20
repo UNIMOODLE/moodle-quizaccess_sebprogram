@@ -34,7 +34,7 @@
 use mod_quiz\local\access_rule_base;
 use quizaccess_sebprogram\program;
 use quizaccess_sebprogram\program_quiz;
-use quizaccess_seb\seb_access_manager;
+use quizaccess_seb\access_manager;
 use quizaccess_seb\settings_provider;
 
 defined('MOODLE_INTERNAL') || die();
@@ -43,7 +43,7 @@ if ($CFG->version < 2021110800) {
     require_once($CFG->dirroot . '/mod/quiz/accessrule/seb/classes/access_manager.php');
 } 
 // Adding a class alias for backwards compatibility with the previous class name.
-class_alias(seb_access_manager::class, 'access_manager');
+class_alias(access_manager::class, 'access_manager');
 
 /**
  * A rule requiring the student to promise not to cheat.
