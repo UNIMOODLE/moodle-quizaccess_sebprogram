@@ -34,7 +34,7 @@
 use mod_quiz\local\access_rule_base;
 use quizaccess_sebprogram\program;
 use quizaccess_sebprogram\program_quiz;
-use quizaccess_seb\seb_access_manager;
+use quizaccess_seb\access_manager;
 use quizaccess_seb\settings_provider;
 
 defined('MOODLE_INTERNAL') || die();
@@ -43,7 +43,7 @@ if ($CFG->version < 2021110800) {
     require_once($CFG->dirroot . '/mod/quiz/accessrule/seb/classes/access_manager.php');
     // Adding a class alias for backwards compatibility with the previous class name.
     class_alias(access_manager::class, 'seb_access_manager');
-} 
+}
 
 /**
  * A rule requiring the student to promise not to cheat.
@@ -63,7 +63,7 @@ class quizaccess_sebprogram extends quiz_access_rule_base {
      * @return quiz_access_rule_base|null the rule, if applicable, else null.
      */
     public static function make(quiz $quizobj, $timenow, $canignoretimelimits) {
-        $accessmanager = new seb_access_manager($quizobj);
+        $accessmanager = new access_manager($quizobj);
         // If Safe Exam Browser is not required, this access rule is not applicable.
         if (!$accessmanager->seb_required()) {
             return null;
