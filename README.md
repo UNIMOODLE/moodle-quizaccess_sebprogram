@@ -1,13 +1,24 @@
-# Safe Exam Program #
+# QuizAccess - Sebprogram #
+
+## Introduction
+
+This Moodle plugin extends the functionality of Safe Exam Browser (SEB), allowing administrators/teachers to specify certain programs that will be permitted during quizzes. With this tool, administrators/teachers can enhance control over the SEB, ensuring that only authorized applications are accessible to students while completing their assessments.All of these settings can be managed directly from Moodle, within the quiz configuration.
+
+[<img src="https://unimoodle.github.io/assets/images/unimoodle-primarylogo-rgb-1200x353.png" height="70px"/>](https://unimoodle.github.io)
+
+
+## System Requirements ##
+Compatible with Moodle 4.1 and newer versions.
+
 
 ## Installing manually ##
+
 
 The plugin can be also installed by putting the contents of this directory to
 
     {your/moodle/dirroot}/mod/quiz/accessrule/sebprogram
 
-Afterwards, log in to your Moodle site as an admin and go to _Site administration >
-Notifications_ to complete the installation.
+Afterwards, log in to your Moodle site as an admin and go to _Site administration to complete the installation.
 
 Alternatively, you can run
 
